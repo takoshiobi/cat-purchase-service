@@ -1,6 +1,7 @@
 package ru.sds.cat_purchase_service.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class PurchaseService {
 
@@ -51,14 +53,20 @@ public class PurchaseService {
         return purchase.getId();
     }
 
-    @RabbitListener(queues = "purchase-cat-response-mq")
+    @RabbitListener(queues = "purchase-cat-response-mq", ackMode = "AUTO")
     @Transactional
     public void updatePurchase(@Payload PurchaseResponseDto purchaseResponseDto) {
-        purchaseRepository.update(
-                purchaseResponseDto.getPurchaseId(),
-                new Timestamp(System.currentTimeMillis()),
-                purchaseResponseDto.getStatus(),
-                purchaseResponseDto.getDescription()
-        );
+        List<PurchaseDBParamsDto> purchase = purchaseRepository.findById(purchaseResponseDto.getPurchaseId());
+
+        if (purchase.isEmpty()) {
+            log.warn(String.format("Update failed. Purchase with id %s doesn't exist", purchaseResponseDto.getPurchaseId()));
+        } else {
+            purchaseRepository.update(
+                    purchaseResponseDto.getPurchaseId(),
+                    new Timestamp(System.currentTimeMillis()),
+                    purchaseResponseDto.getStatus(),
+                    purchaseResponseDto.getDescription()
+            );
+        }
     }
 }
