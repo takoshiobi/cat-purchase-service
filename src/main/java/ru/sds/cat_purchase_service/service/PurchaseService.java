@@ -42,13 +42,13 @@ public class PurchaseService {
                 new Timestamp(System.currentTimeMillis()),
                 Status.RECEIVED.toString());
         purchaseProducer.purchase(
-                purchaseDto.getCat_id(),
+                purchaseDto.getCatId(),
                 purchase.getId());
         purchaseRepository.update(
                 purchase.getId(),
                 new Timestamp(System.currentTimeMillis()),
                 Status.PROCESSED.toString(),
-                String.format("Processing purchase of cat with id %s", purchaseDto.getCat_id())
+                String.format("Processing purchase of cat with id %s", purchaseDto.getCatId())
         );
         return purchase.getId();
     }

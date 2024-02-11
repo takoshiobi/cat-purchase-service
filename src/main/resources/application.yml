@@ -12,8 +12,8 @@ spring:
     enabled: false
 rabbitmq:
   main:
-    addresses: localhost:5672
-    rabbit-host: vhost
+    addresses: ${RABBITMQ_HOST:localhost}:${RABBITMQ_PORT:5672}
+    rabbit-host: ${RABBITMQ_VIRTUAL_HOST:vhost}
     enable: true
-    password: guest
-    username: guest
+    password: ${RABBITMQ_PWD:guest}
+    username: ${RABBITMQ_USR:guest}

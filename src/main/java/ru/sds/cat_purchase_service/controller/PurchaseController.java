@@ -30,6 +30,6 @@ public class PurchaseController {
     @Operation(summary = "Get purchase info")
     @GetMapping
     public PurchaseDBParamsDto getInfo(PurchaseInfoRequestDto purchaseInfoRequestDto) {
-        return purchaseService.getInfo(purchaseInfoRequestDto.getSale_id());
+        return purchaseService.getInfo(purchaseInfoRequestDto.getSaleId());
     }
 }

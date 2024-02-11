@@ -1,5 +1,6 @@
 package ru.sds.cat_purchase_service.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,6 @@ public class PurchaseDto {
 
     @Schema(description = "Purchased cat id")
     @NonNull
-    private Long cat_id;
+    @JsonProperty("cat_id")
+    private Long catId;
 }
